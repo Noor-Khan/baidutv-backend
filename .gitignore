@@ -1,0 +1,14 @@
+node_modules
+build
+docs
+dist
+/docs
+uploads
+logs
+
+
+.env
+yarn.lock
+yarn-error.log
+.idea
+.vscode

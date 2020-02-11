@@ -1,0 +1,5 @@
+DB_HOST=localhost
+DB_USER=postgres
+DB_PASSWORD=asdf
+DB_NAME=baidutv_db
+#DEBUG=knex*
