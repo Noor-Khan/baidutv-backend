@@ -13,18 +13,16 @@ export class AuthController extends BaseController {
       const findEmail = await User.query().where({
         email
       });
+
       if (Array.isArray(findEmail) && findEmail.length > 0) {
-        return {
-          message:
-            "Email has already being taken. Please try again with an alternate email."
-        };
+        throw new Error(
+          "Email has already being taken. Please try again with an alternate email."
+        );
       }
 
-      console.log("ok");
       const user = await User.query().insert({
         email
       });
-      console.log(user);
       if (user) {
         return res.status(this.status.OK).json({
           message: "Succesfull",
