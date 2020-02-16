@@ -1,6 +1,6 @@
 import BaseController from "../../utils/baseController";
 import Email from "../../utils/email";
-import { Kid, KidDetail } from "./KidModel";
+import { Kid, KidDetails } from "./KidModel";
 
 export class KidController extends BaseController {
   constructor() {
@@ -9,24 +9,32 @@ export class KidController extends BaseController {
 
   createKid = async (req, res) => {
     try {
-      const { parent_name, kid_name, age, gender, interest } = req.body;
+      const { parent_name, kid_arr } = req.body;
 
-      const kid = await Kid.query().insert({
-        parent_name,
-        kid_name,
-        age,
-        gender
+      const k = await Kid.query().insert({
+        parent_name: parent_name
       });
 
-      console.log(kid);
-      const kid_detail = await KidDetail.query().insert({
-        interest,
-        kid_id: kid.id
-      });
+      let kid_detail = [];
+      for (let i of kid_arr) {
+        const detail = await KidDetails.query().insert({
+          kid_name: i.kid_name,
+          age: i.age,
+          gender: i.gender,
+          interest: i.interest,
+          kid_id: k.id
+        });
+        kid_detail.push(detail);
+      }
+
+      const kid = await Kid.query()
+        .where({ id: k.id })
+        .withGraphFetched("kid_details");
+
       if (kid) {
         return res.status(this.status.OK).json({
           message: "Successfull",
-          result: { kid, kid_detail },
+          result: kid,
           status: true
         });
       }
