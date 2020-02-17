@@ -3,8 +3,8 @@ exports.up = function(knex) {
     t.increments().primary();
     t.string("kid_name");
     t.integer("age");
-    t.smallint("gender");
-    t.smallint("interest");
+    t.string("gender");
+    t.string("interest");
     t.integer("kid_id").unsigned();
     t.foreign("kid_id").references("kids.id");
   });
