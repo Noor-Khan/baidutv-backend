@@ -6,7 +6,7 @@ dist
 uploads
 logs
 
-
+prod-server
 .env
 yarn.lock
 yarn-error.log

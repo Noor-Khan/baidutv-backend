@@ -1,6 +1,10 @@
 import BaseController from "../../utils/baseController";
 import Email from "../../utils/email";
-import { User } from "./AuthModel";
+import nodemailer from 'nodemailer'
+import Moment from "moment"
+import {
+  User
+} from "./AuthModel";
 
 export class AuthController extends BaseController {
   constructor() {
@@ -9,7 +13,9 @@ export class AuthController extends BaseController {
 
   register = async (req, res) => {
     try {
-      const { email } = req.body;
+      const {
+        email
+      } = req.body;
       const findEmail = await User.query().where({
         email
       });
@@ -21,8 +27,10 @@ export class AuthController extends BaseController {
       }
 
       const user = await User.query().insert({
-        email
+        email,
       });
+
+
       if (user) {
         return res.status(this.status.OK).json({
           message: "Succesfull",

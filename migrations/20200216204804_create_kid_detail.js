@@ -1,5 +1,5 @@
-exports.up = function(knex) {
-  return knex.schema.createTable("kid_details", function(t) {
+exports.up = function (knex) {
+  return knex.schema.createTable("kid_details", function (t) {
     t.increments().primary();
     t.string("kid_name");
     t.integer("age");
@@ -10,6 +10,6 @@ exports.up = function(knex) {
   });
 };
 
-exports.down = function(knex) {
+exports.down = function (knex) {
   return knex.schema.dropTable("kid_details");
 };
