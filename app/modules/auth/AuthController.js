@@ -3,6 +3,10 @@ import Email from "../../utils/email";
 import nodemailer from 'nodemailer'
 import Moment from "moment"
 import {
+  google
+} from 'googleapis';
+
+import {
   User
 } from "./AuthModel";
 
@@ -42,4 +46,61 @@ export class AuthController extends BaseController {
       this.sendServerError(res, err);
     }
   };
+
+  googleAuth = async (req, res) => {
+    try {
+      const token = req.body.GoogleUser.uc.access_token;
+      const email = req.body.GoogleUser.Qt.zu;
+
+      const [findEmail] = await User.query().where({
+        email
+      })
+
+      if (findEmail) {
+        return res.status(this.status.OK).json({
+          message: "successfull",
+          result: {
+            user: findEmail,
+            token
+          }
+        })
+      }
+
+      const user = await User.query().insert({
+        email
+      })
+
+      if (user) {
+        return res.status(this.status.CREATED).json({
+          message: "Successfull",
+          result: {
+            user,
+            token
+          }
+        })
+      }
+
+      return res.status(this.status.BAD_REQUEST).json({
+        message: "Failed",
+        status: false
+      })
+    } catch (err) {
+      return res.status(this.status.INTERNAL_SERVER_ERROR).json({
+        error: err,
+        status: false
+      })
+    }
+  }
+
+  facebookAuth = async (req, res) => {
+    try {
+      console.log(req.body)
+      return res.send("asdfasdfas")
+    } catch (err) {
+      return res.status(this.status.INTERNAL_SERVER_ERROR).json({
+        error: err,
+        status: false
+      })
+    }
+  }
 }
