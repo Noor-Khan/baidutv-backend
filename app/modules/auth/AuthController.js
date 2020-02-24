@@ -94,8 +94,39 @@ export class AuthController extends BaseController {
 
   facebookAuth = async (req, res) => {
     try {
-      console.log(req.body)
-      return res.send("asdfasdfas")
+      const {
+        response,
+      } = req.body;
+      console.log(response)
+
+      const [findUser] = await User.query().where({
+        user_id: response.id
+      })
+
+      if (findUser) {
+        return res.status(this.status.OK).json({
+          message: "Successfull",
+          user: findUser
+        })
+      }
+
+      const user = await User.query().insert({
+        user_id: response.id,
+        name: response.name,
+        email: response.email || null
+      })
+
+      if (user) {
+        return res.status(this.status.CREATED).json({
+          message: "Successfull",
+          user
+        })
+      }
+
+      return res.status(this.status.BAD_REQUEST).json({
+        message: "Failed",
+        status: false
+      })
     } catch (err) {
       return res.status(this.status.INTERNAL_SERVER_ERROR).json({
         error: err,
