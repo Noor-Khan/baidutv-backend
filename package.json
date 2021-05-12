@@ -21,7 +21,7 @@
     "knex": "^0.20.8",
     "moment": "^2.24.0",
     "mysql2": "^2.1.0",
-    "nodemailer": "^6.4.2",
+    "nodemailer": "^6.4.16",
     "nodemon": "^2.0.2",
     "objection": "^2.1.2",
     "passport": "^0.4.1",
